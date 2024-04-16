@@ -5,6 +5,8 @@ const itemContainer = document.getElementsByClassName("food_section-container");
 const filterMenus = document.getElementsByClassName("filters_menu");
 const rowGrid = document.getElementsByClassName("row grid");
 const goToTopBtn = document.getElementById("go-to-top-button");
+const orderInfo = {};
+const orderContainer = document.querySelector(".shopping-navbar-nav");
 initContent();
 
 function initContent() {
@@ -95,7 +97,7 @@ function addContent(items, position) {
           <p>${items[item].description}</p>
           <div class="options">
             <h6>$${items[item].price}</h6>
-            <a>
+            <a dataVal="${items[item].name}" dataDesc = "${items[item].description}" dataPrice = "${items[item].price}"> 
               <i
                 class="fa fa-cart-shopping"
                 aria-hidden="true"
@@ -110,7 +112,32 @@ function addContent(items, position) {
   }
   rowGrid[position].insertAdjacentHTML("beforeend", html);
 }
-
+function addOrder(orderInfo){
+  
+  let total = orderInfo.qty * orderInfo.price;
+  total = total.toFixed(2);
+  console.log(orderInfo.qty.toString);
+  if(orderInfo.qty == 1){
+   const html = `<div class="order-item">
+      ${orderInfo.name.toString()}
+        </div>
+        <div class="order-item" itemQty="${orderInfo.name.toString()}">
+           ${orderInfo.qty.toString()}   
+        </div>
+        <div class="order-item" itemTotal="${orderInfo.name.toString()}">
+           ${total.toString()}
+        </div>`
+        orderContainer.insertAdjacentHTML("beforeend",html);
+}
+  else{
+    console.log(orderInfo.qty.toString);
+    $(document).ready(function(){
+      $('[itemQty="'+orderInfo.name.toString()+'"]').text(orderInfo.qty.toString())
+      $('[itemTotal="'+orderInfo.name.toString()+'"]').text(total.toString())
+    })
+  }
+console.log(orderContainer);
+}
 function shuffleObject(obj) {
   // Convert object values to an array
   const valuesArray = Object.values(obj);
@@ -261,3 +288,29 @@ $(document).ready(function () {
     $(".menu_nav").toggleClass("slideup");
   });
 });
+$(document).ready(function() {
+  $("a").click(function() {
+    
+      var dataVal = $(this).attr("dataVal");
+      var dataDesc = $(this).attr("dataDesc");
+      var dataPrice = $(this).attr("dataPrice");
+    if(orderInfo.hasOwnProperty(dataVal)){
+      orderInfo[dataVal].qty+=1;
+      //addOrder(orderInfo.dataVal);
+    }
+    else{
+      //console.log(dataVal);
+      //console.log(dataDesc);
+      //console.log(dataPrice);
+      //const newOrder = {name:dataVal,desc:dataDesc,price:dataPrice,qty:0};
+      orderInfo[dataVal] = {};
+      orderInfo[dataVal].price = dataPrice;
+      orderInfo[dataVal].description = dataDesc;
+      orderInfo[dataVal].name = dataVal;
+      orderInfo[dataVal].qty = 1;
+    }
+    //addOrder(orderInfo.dataVal);
+    addOrder(orderInfo[dataVal]);
+    console.log(orderInfo);
+  })
+})

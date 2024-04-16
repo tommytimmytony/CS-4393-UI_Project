@@ -112,13 +112,10 @@ function addContent(items, position) {
   }
   rowGrid[position].insertAdjacentHTML("beforeend", html);
 }
-function addOrder(orderInfo){
-  
-  let total = orderInfo.qty * orderInfo.price;
-  total = total.toFixed(2);
-  console.log(orderInfo.qty.toString);
-  if(orderInfo.qty == 1){
-   const html = `<div class="order-item">
+function addOrder(orderInfo) {
+  const total = (orderInfo.qty * orderInfo.price).toFixed(2);
+  if (orderInfo.qty == 1) {
+    const html = `<div class="order-item">
       ${orderInfo.name.toString()}
         </div>
         <div class="order-item" itemQty="${orderInfo.name.toString()}">
@@ -126,17 +123,18 @@ function addOrder(orderInfo){
         </div>
         <div class="order-item" itemTotal="${orderInfo.name.toString()}">
            ${total.toString()}
-        </div>`
-        orderContainer.insertAdjacentHTML("beforeend",html);
-}
-  else{
-    console.log(orderInfo.qty.toString);
-    $(document).ready(function(){
-      $('[itemQty="'+orderInfo.name.toString()+'"]').text(orderInfo.qty.toString())
-      $('[itemTotal="'+orderInfo.name.toString()+'"]').text(total.toString())
-    })
+        </div>`;
+    orderContainer.insertAdjacentHTML("beforeend", html);
+  } else {
+    $(document).ready(function () {
+      $('[itemQty="' + orderInfo.name.toString() + '"]').text(
+        orderInfo.qty.toString()
+      );
+      $('[itemTotal="' + orderInfo.name.toString() + '"]').text(
+        total.toString()
+      );
+    });
   }
-console.log(orderContainer);
 }
 function shuffleObject(obj) {
   // Convert object values to an array
@@ -288,29 +286,20 @@ $(document).ready(function () {
     $(".menu_nav").toggleClass("slideup");
   });
 });
-$(document).ready(function() {
-  $("a").click(function() {
-    
-      var dataVal = $(this).attr("dataVal");
-      var dataDesc = $(this).attr("dataDesc");
-      var dataPrice = $(this).attr("dataPrice");
-    if(orderInfo.hasOwnProperty(dataVal)){
-      orderInfo[dataVal].qty+=1;
-      //addOrder(orderInfo.dataVal);
-    }
-    else{
-      //console.log(dataVal);
-      //console.log(dataDesc);
-      //console.log(dataPrice);
-      //const newOrder = {name:dataVal,desc:dataDesc,price:dataPrice,qty:0};
+$(document).ready(function () {
+  $("a").click(function () {
+    var dataVal = $(this).attr("dataVal");
+    var dataDesc = $(this).attr("dataDesc");
+    var dataPrice = $(this).attr("dataPrice");
+    if (orderInfo.hasOwnProperty(dataVal)) {
+      orderInfo[dataVal].qty += 1;
+    } else {
       orderInfo[dataVal] = {};
       orderInfo[dataVal].price = dataPrice;
       orderInfo[dataVal].description = dataDesc;
       orderInfo[dataVal].name = dataVal;
       orderInfo[dataVal].qty = 1;
     }
-    //addOrder(orderInfo.dataVal);
     addOrder(orderInfo[dataVal]);
-    console.log(orderInfo);
-  })
-})
+  });
+});

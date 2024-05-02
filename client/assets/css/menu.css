@@ -1,7 +1,6 @@
 a {
   text-decoration: none;
   color: inherit;
-  cursor: pointer;
 }
 
 .hero_area {
@@ -112,19 +111,6 @@ a {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* 3D shadow */
   transition: all 0.3s ease;
   cursor: pointer;
-}
-
-.item-count {
-  position: fixed;
-  top: 54.5%;
-  right: 33px;
-  font-size: 1rem;
-  background-color: rgba(255, 75, 150, 1);
-  border-radius: 50em;
-  width: auto;
-  min-width: 1.25rem;
-  aspect-ratio: 1 / 1;
-  display: inline-block;
 }
 
 .shopping-exit-btn {

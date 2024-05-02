@@ -4,7 +4,8 @@ const mainContainer = document.querySelector(".food-container");
 const itemContainer = document.getElementsByClassName("food_section-container");
 const filterMenus = document.getElementsByClassName("filters_menu");
 const rowGrid = document.getElementsByClassName("row grid");
-
+const orderInfo = {};
+const orderContainer = document.querySelector(".shopping-navbar-nav");
 initContent();
 
 function initContent() {
@@ -56,7 +57,7 @@ function addFilterMenu(sectionFilter, position) {
     return;
   }
   const html = `<ul class="filters_menu" data-filter-group="group${position}">
-   <li class="active" data-filter="*">All</li>
+   <li class="active" data-filter="*" data-filter-group="group${position}">All</li>
   </ul>`;
   itemContainer[position].insertAdjacentHTML("beforeend", html);
 }
@@ -67,7 +68,7 @@ function addFilterItem(sectionFilter, position) {
   }
   let html = ``;
   for (const item in sectionFilter) {
-    html += `<li data-filter=".${sectionFilter[item].filter}">
+    html += `<li data-filter=".${sectionFilter[item].filter}" data-filter-group="group${position}">
        ${sectionFilter[item].name}
      </li>\n`;
   }
@@ -84,7 +85,7 @@ function addContentContainer(position) {
 
 function addContent(items, position) {
   let html = ``;
-
+  items = shuffleObject(items);
   for (const item in items) {
     html += `<div class="col-sm-6 col-lg-4 all ${items[item].filter}">
     <div class="box">
@@ -95,7 +96,7 @@ function addContent(items, position) {
           <p>${items[item].description}</p>
           <div class="options">
             <h6>$${items[item].price}</h6>
-            <a href="">
+            <a dataVal="${items[item].name}" dataDesc = "${items[item].description}" dataPrice = "${items[item].price}"> 
               <i
                 class="fa fa-cart-shopping"
                 aria-hidden="true"
@@ -109,6 +110,48 @@ function addContent(items, position) {
   </div>\n`;
   }
   rowGrid[position].insertAdjacentHTML("beforeend", html);
+}
+function addOrder(orderInfo) {
+  const total = (orderInfo.qty * orderInfo.price).toFixed(2);
+  if (orderInfo.qty == 1) {
+    const html = `<div class="order-item">
+      ${orderInfo.name.toString()}
+        </div>
+        <div class="order-item" itemQty="${orderInfo.name.toString()}">
+           ${orderInfo.qty.toString()}   
+        </div>
+        <div class="order-item" itemTotal="${orderInfo.name.toString()}">
+           ${total.toString()}
+        </div>`;
+    orderContainer.insertAdjacentHTML("beforeend", html);
+  } else {
+    $(document).ready(function () {
+      $('[itemQty="' + orderInfo.name.toString() + '"]').text(
+        orderInfo.qty.toString()
+      );
+      $('[itemTotal="' + orderInfo.name.toString() + '"]').text(
+        total.toString()
+      );
+    });
+  }
+}
+function shuffleObject(obj) {
+  // Convert object values to an array
+  const valuesArray = Object.values(obj);
+
+  // Shuffle the array
+  for (let i = valuesArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [valuesArray[i], valuesArray[j]] = [valuesArray[j], valuesArray[i]];
+  }
+
+  // Reconstruct the object with shuffled values
+  const shuffledObject = {};
+  Object.keys(obj).forEach((key, index) => {
+    shuffledObject[key] = valuesArray[index];
+  });
+
+  return shuffledObject;
 }
 
 //sticky for nagivation bar
@@ -163,9 +206,7 @@ $(document).ready(function () {
 
   // smooth scrolling
   function scrollToTarget(targetId) {
-    console.log(targetId);
     const targetElement = document.getElementById(targetId);
-    console.log(targetElement);
     if (targetElement) {
       let offset = 0;
       if (targetId == "0") {
@@ -183,139 +224,94 @@ $(document).ready(function () {
 
 // isotope js
 $(window).on("load", function () {
+  var $grids = {}; // Object to store isotope grids
+
+  // Loop to initialize isotope grids
+  for (var i = 0; i < Object.keys(data).length; i++) {
+    var $grid = $(".group" + i).isotope({
+      itemSelector: ".all",
+      percentPosition: false,
+      masonry: {
+        columnWidth: ".all",
+      },
+    });
+    $grids["group" + i] = $grid; // Store grid in the object
+  }
+
+  // Click event handler for filter menu items
   $(".filters_menu li").click(function () {
-    $(".filters_menu li").removeClass("active");
-    $(this).addClass("active");
+    $(this)
+      .addClass("active")
+      .siblings("[data-filter-group='" + $(this).data("filter-group") + "']")
+      .removeClass("active");
 
     var data = $(this).attr("data-filter");
     var filterGroup = $(this).closest(".filters_menu").data("filter-group");
-    console.log(filterGroup);
-    switch (filterGroup) {
-      case "group0":
-        $grid0.isotope({
-          filter: data,
-        });
-        break;
-      case "group1":
-        $grid1.isotope({
-          filter: data,
-        });
-        break;
-      case "group2":
-        $grid2.isotope({
-          filter: data,
-        });
-        break;
-      case "group3":
-        $grid3.isotope({
-          filter: data,
-        });
-        break;
-      case "group4":
-        $grid4.isotope({
-          filter: data,
-        });
-        break;
-      case "group5":
-        $grid5.isotope({
-          filter: data,
-        });
-        break;
-      case "group6":
-        $grid6.isotope({
-          filter: data,
-        });
-        break;
-      case "group7":
-        $grid7.isotope({
-          filter: data,
-        });
-        break;
-      case "group8":
-        $grid8.isotope({
-          filter: data,
-        });
-        break;
-      case "group9":
-        $grid9.isotope({
-          filter: data,
-        });
-        break;
-      default:
-        // Handle other cases if needed
-        console.log("Something went wrong! Check HTML group!");
-        break;
+
+    // Use the stored grid from the object
+    $grids[filterGroup].isotope({
+      filter: data,
+    });
+  });
+});
+
+$(document).ready(function () {
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 1000 && !$(".shopping-navbar").hasClass("show")) {
+      $("#go-to-top-button").addClass("show");
+    } else {
+      $("#go-to-top-button").removeClass("show");
     }
   });
+  $("#go-to-top-button").click(function () {
+    $("html, body").animate({ scrollTop: 0 }, 500);
+    return false;
+  });
+});
 
-  var $grid0 = $(".group0").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
+$(document).ready(function () {
+  $(".shopping-btn").click(function () {
+    $(".shopping-navbar").toggleClass("show");
+    $(".shopping-exit-btn").toggleClass("show");
+    $("#go-to-top-button").removeClass("show");
+    $(".menu_nav").toggleClass("slideup");
   });
-  var $grid1 = $(".group1").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
+});
+
+$(document).ready(function () {
+  $(".shopping-exit-btn").click(function () {
+    $(".shopping-navbar").toggleClass("show");
+    $(".shopping-exit-btn").toggleClass("show");
+    $(".menu_nav").toggleClass("slideup");
   });
-  var $grid2 = $(".group2").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
-  });
-  var $grid3 = $(".group3").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
-  });
-  var $grid4 = $(".group4").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
-  });
-  var $grid5 = $(".group5").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
-  });
-  var $grid6 = $(".group6").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
-  });
-  var $grid7 = $(".group7").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
-  });
-  var $grid8 = $(".group8").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
-  });
-  var $grid9 = $(".group9").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
+});
+
+function updateItemCounter() {
+  const itemCount = $(".item-count");
+
+  if (Object.keys(orderInfo).length === 0) {
+    itemCount.hide();
+  } else {
+    itemCount.show();
+    itemCount.text(`${Object.keys(orderInfo).length}`);
+  }
+}
+
+$(document).ready(function () {
+  $("a").click(function () {
+    var dataVal = $(this).attr("dataVal");
+    var dataDesc = $(this).attr("dataDesc");
+    var dataPrice = $(this).attr("dataPrice");
+    updateItemCounter();
+    if (orderInfo.hasOwnProperty(dataVal)) {
+      orderInfo[dataVal].qty += 1;
+    } else {
+      orderInfo[dataVal] = {};
+      orderInfo[dataVal].price = dataPrice;
+      orderInfo[dataVal].description = dataDesc;
+      orderInfo[dataVal].name = dataVal;
+      orderInfo[dataVal].qty = 1;
+    }
+    addOrder(orderInfo[dataVal]);
   });
 });

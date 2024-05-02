@@ -1,0 +1,209 @@
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.hero_area {
+  width: 100%;
+  min-height: 150px;
+  background-image: url("../images/banner.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.menu_nav {
+  background-color: #f1f2f3;
+  position: relative;
+  left: 0;
+  width: 100%;
+  transform: translateY(0);
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+.menu_nav.slideup {
+  z-index: -10;
+  transform: translateY(-300%);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.grid-item {
+  color: rgb(209, 19, 19);
+  padding: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  transform: skew(-10deg);
+  cursor: pointer;
+}
+
+.food_section {
+  padding-top: 100px;
+}
+
+.sticky {
+  background-color: #f1f2f3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10000;
+  margin-bottom: 50px;
+}
+
+.header_bot_section_sticky {
+  padding-top: 160px;
+}
+
+.custom-next-button {
+  position: absolute;
+  top: 60%;
+  right: 10px; /* Adjust the right position as needed */
+  transform: translateY(-50%);
+  z-index: 1000; /* Ensure the button appears above the carousel */
+  padding: 10px 20px;
+  border: none;
+  background-color: #4caf50; /* Button background color */
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Add hover effect for button */
+.custom-next-button:hover {
+  transform: translateY(-50%) scale(1.05); /* Scale up slightly on hover */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Increase shadow size on hover */
+}
+
+/* Add active effect for button */
+.custom-next-button:active {
+  transform: translateY(-50%) scale(0.95); /* Scale down slightly on click */
+  box-shadow: none; /* Remove shadow on click */
+}
+
+.break_line {
+  margin-top: 50px;
+  width: 80%;
+  justify-self: center;
+}
+
+.shopping-btn {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  background-color: #e69c00; /* Red color */
+  border: none;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* 3D shadow */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.item-count {
+  position: fixed;
+  top: 54.5%;
+  right: 33px;
+  font-size: 1rem;
+  background-color: rgba(255, 75, 150, 1);
+  border-radius: 50em;
+  width: auto;
+  min-width: 1.25rem;
+  aspect-ratio: 1 / 1;
+  display: inline-block;
+}
+
+.shopping-exit-btn {
+  position: fixed;
+  top: 4%;
+  right: -100px;
+  background-color: #cac2b0; /* Red color */
+  border: none;
+  color: rgb(45, 38, 38);
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* 3D shadow */
+  transition: all 0.3s ease;
+  z-index: 100;
+  cursor: pointer;
+}
+
+.shopping-exit-btn.show {
+  right: 20px;
+}
+
+#go-to-top-button {
+  position: fixed;
+  top: 100%;
+  right: 20px;
+  background-color: #ff5252; /* Red color */
+  border: none;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* 3D shadow */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+#go-to-top-button:hover {
+  background-color: #f44336; /* Darker red on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 40px rgba(0, 0, 0, 0.2); /* Bigger shadow on hover */
+}
+
+#go-to-top-button.show {
+  top: 90%;
+}
+
+.shopping-navbar {
+  width: 25rem;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: -25rem;
+  background-color: #e69c00;
+  transition: right 0.3s ease;
+}
+
+.shopping-navbar.show {
+  right: 0; /* Slide in the navbar to the right */
+}
+
+.shopping-navbar-nav {
+  max-height: 500px;
+  overflow: auto;
+  margin-top: 20%;
+  display: grid;
+  border: 1px solid black;
+  grid-template-columns: 50% 25% 25%;
+}
+.order-item {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid black;
+}
+.hidden {
+  display: none;
+}

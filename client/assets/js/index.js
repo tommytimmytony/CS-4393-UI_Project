@@ -50,3 +50,29 @@ function updateActiveUser() {
     activeUserEl.textContent = user;
   }
 }
+
+$(document).ready(function () {
+  $("a").on("click", function (event) {
+    const itemName = $(this).attr("itemName");
+    const item = itemName.split("#");
+    const name = item[0];
+    const price = Number(item[1]);
+    const desc = item[2];
+    console.log(name, price, desc);
+    const ordersInfo = {};
+    ordersInfo[name] = {};
+    ordersInfo[name].price = price;
+    ordersInfo[name].description = desc;
+    ordersInfo[name].name = name;
+    ordersInfo[name].qty = 1;
+    const dataJson = localStorage.getItem("ordersInfo");
+    const oldData = JSON.parse(dataJson);
+    for (const key in oldData) {
+      if (oldData[key].qty == 0) {
+        continue;
+      }
+      ordersInfo[key] = oldData[key];
+    }
+    localStorage.setItem("ordersInfo", JSON.stringify(ordersInfo));
+  });
+});

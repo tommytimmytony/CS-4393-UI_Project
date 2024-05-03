@@ -1,0 +1,91 @@
+/* Style for the main container */
+.checkout-container {
+  max-width: 600px; /* Limit the maximum width */
+  margin: 50px auto; /* Center horizontally */
+  padding: 20px; /* Padding inside the container */
+  background-color: #f9f9f9; /* Light background */
+  border: 1px solid #ddd; /* Light border */
+  border-radius: 8px; /* Round the corners */
+  box-sizing: border-box; /* Include padding and borders in width calculations */
+}
+
+/* Styling for the headings */
+.checkout-container h2 {
+  color: #333; /* Text color */
+  margin-bottom: 16px; /* Space below the heading */
+  font-size: 1.5em; /* Increase font size */
+  text-align: left; /* Align to the left */
+}
+
+/* Styling for the pickup edit container */
+.pickup-edit-container {
+  display: flex; /* Flex layout */
+  flex-direction: column; /* Column layout */
+  gap: 10px; /* Space between inputs and button */
+}
+
+/* Styling for the form inputs */
+.checkout-container input {
+  padding: 10px; /* Add padding */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 4px; /* Round the corners */
+  box-sizing: border-box; /* Include padding in width calculations */
+  width: 100%; /* Full width */
+}
+
+/* Styling for the Edit button */
+.submit-button {
+  padding: 10px 16px; /* Padding */
+  background-color: #e69c00; /* Button background color */
+  color: white; /* Text color */
+  border: none; /* No border */
+  border-radius: 4px; /* Round the corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth hover effect */
+}
+
+.submit-button:hover {
+  background-color: #cc8500; /* Darker on hover */
+}
+
+/* Styling for horizontal lines */
+.checkout-container hr {
+  border: none; /* No border style */
+  border-top: 1px solid #ddd; /* Light top border */
+  margin: 20px 0; /* Space before and after */
+}
+
+/* Styling for the order container */
+.order-container {
+  gap: 12px;
+  max-height: 500px;
+  padding: 10px;
+  width: 100%;
+  overflow: auto;
+  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: 50% 25% 5% 20%;
+}
+
+.order-itemQty-modify {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 10px;
+  gap: 2px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  border: none;
+}
+
+.total-section {
+  display: flex; /* Flex layout */
+  justify-content: space-between; /* Align content */
+  padding: 10px 0; /* Padding around each summary line */
+}

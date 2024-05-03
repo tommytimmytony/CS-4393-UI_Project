@@ -48,7 +48,7 @@
     <link href="assets/css/responsive.css" rel="stylesheet" />
     <!-- Tommy's style-->
     <link href="assets/css/menu.css" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/login.css" />
+    <link rel="stylesheet" href="assets/css/checkout.css" />
   </head>
 
   <body>
@@ -85,10 +85,10 @@
                 <li class="nav-item">
                   <a class="nav-link" href="menu.html">Menu</a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                   <a class="nav-link user" href="login.html">Login</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                   <a class="nav-link" href="checkout.html">Checkout</a>
                 </li>
               </ul>
@@ -102,21 +102,45 @@
       <!-- end header section -->
     </div>
 
-    <div class="container">
-      <div class="login-container">
-        <h1 class="header"></h1>
-        <div class="login">
-          <h1>Login</h1>
-          <form>
-            <input type="username" placeholder="Username" name="username" />
-            <input type="password" placeholder="Password" name="password" />
-            <button class="submit-btn">Login</button>
-          </form>
-          <br />
-          <p>OR</p>
-          <button class="submit-btn"><a href="signup.html">Sign up</a></button>
-          <br />
+    <div class="checkout-container">
+       <h1 class="header" style="display: grid; place-content: center;">Orders Succesfully Placed!</h1>
+      <div style="display: grid; place-content: center">
+        <h2>Pickup at</h2>
+      </div>
+
+      <div class="pickup-edit-container">
+        <input type="text" placeholder="Street/Address" name="street" />
+        <input type="text" placeholder="City/Town" name="city" />
+        <input type="text" placeholder="State" name="state" />
+      </div>
+      <hr />
+      <div style="display: grid; place-content: center">
+        <h2>Order Summary</h2>
+      </div>
+      <div class="order-container">
+        <!-- <div class="order-item">Pollos Classic Breakfast</div>
+        <div class="order-item">
+          <span>3</span>
+          <div class="order-itemQty-modify">
+            <i class="fa-solid fa-caret-up" itemQty="item-1-Qty"></i>
+            <i class="fa-solid fa-caret-down" itemQty="item-1-Qty"></i>
+          </div>
         </div>
+        <div class="order-item">Total</div>
+        -->
+      </div>
+      <hr />
+      <div class="total-section">
+        <span>SubTotal</span><span class="subTotal">$0</span>
+      </div>
+      <div class="total-section">
+        <span>Taxes and fees</span><span class="taxes">$0</span>
+      </div>
+      <div class="total-section">
+        <span>Total</span> <span class="total">$0</span>
+      </div>
+      <div style="display: grid; place-content: center">
+        <button class="submit-button">Submit</button>
       </div>
     </div>
 
@@ -135,6 +159,8 @@
     </footer>
     <!-- footer section -->
   </body>
+  <!-- jQery -->
+  <script src="assets/js/jquery-3.4.1.min.js"></script>
   <!-- custom js -->
-  <script type="module" src="assets/js/login.js"></script>
+  <script type="module" src="assets/js/checkout.js"></script>
 </html>

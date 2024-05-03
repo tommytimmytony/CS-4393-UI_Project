@@ -1,26 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 
-body {
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-  border-radius: 8px;
-  font-family: "Arial", "Poppins", "sans-serif";
-}
-
-/* HomePage - Style */
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-/* Login/SignUp - Style  */
 .login-container {
   display: grid;
   place-items: center;
   align-items: center;
+  text-align: center;
   justify-content: center;
   height: 100vh;
 }
@@ -46,7 +30,8 @@ form {
 }
 
 input[type="username"],
-input[type="password"] {
+input[type="password"],
+input[type="confirmPassword"] {
   padding: 0.5rem;
   margin: 0.5rem;
   width: 100%;
@@ -58,12 +43,14 @@ input[type="password"] {
 }
 
 input[type="username"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="confirmPassword"]:focus {
   outline: none;
   border-bottom-color: #0077ff;
 }
 
-input[type="submit"] {
+input[type="submit"],
+.submit-btn {
   margin-top: 1rem;
   padding: 0.75rem;
   background-color: #0077ff;
@@ -75,11 +62,17 @@ input[type="submit"] {
   transition: background-color 0.3s ease-in-out;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+.submit-btn:hover {
   background-color: #0053ba;
 }
 
 p {
   margin-top: 1rem;
   margin-bottom: 0.5rem;
+}
+
+.header {
+  margin: 0;
+  font-family: 'Fira Sans', Courier, monospace;
 }

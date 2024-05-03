@@ -42,3 +42,11 @@ function myMap() {
   var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 }
 
+updateActiveUser();
+function updateActiveUser() {
+  const activeUserEl = document.querySelector(".nav-link.user");
+  const user = localStorage.getItem("activeUser");
+  if (user != null) {
+    activeUserEl.textContent = user;
+  }
+}

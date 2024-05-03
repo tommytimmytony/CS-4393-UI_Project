@@ -1,6 +1,7 @@
 a {
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
 }
 
 .hero_area {
@@ -99,7 +100,7 @@ a {
   position: fixed;
   top: 50%;
   right: 20px;
-  background-color: #e69c00; /* Red color */
+  background-color: #e69c00; 
   border: none;
   color: white;
   padding: 15px 25px;
@@ -111,6 +112,19 @@ a {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* 3D shadow */
   transition: all 0.3s ease;
   cursor: pointer;
+}
+
+.item-count {
+  position: fixed;
+  top: 54.5%;
+  right: 33px;
+  font-size: 1rem;
+  background-color:#C0392B;
+  border-radius: 50em;
+  width: auto;
+  min-width: 1.25rem;
+  aspect-ratio: 1 / 1;
+  display: inline-block;
 }
 
 .shopping-exit-btn {
@@ -136,7 +150,8 @@ a {
   right: 20px;
 }
 
-#go-to-top-button {
+#go-to-top-button, 
+#checkout-button {
   position: fixed;
   top: 100%;
   right: 20px;
@@ -154,12 +169,14 @@ a {
   cursor: pointer;
 }
 
-#go-to-top-button:hover {
+#go-to-top-button:hover, 
+#checkout-button:hover {
   background-color: #f44336; /* Darker red on hover */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 40px rgba(0, 0, 0, 0.2); /* Bigger shadow on hover */
 }
 
-#go-to-top-button.show {
+#go-to-top-button.show, 
+#checkout-button.show{
   top: 90%;
 }
 
@@ -185,11 +202,31 @@ a {
   border: 1px solid black;
   grid-template-columns: 50% 25% 25%;
 }
+
+
 .order-item {
+  display: flex;
+  justify-content: center; 
+  align-items: center;  
   text-align: center;
   padding: 10px;
   border: 1px solid black;
 }
+
+.order-itemQty-modify {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  margin-left: 10px; 
+  gap: 2px;
+}
+
+.header {
+  margin: 0;
+  font-family: 'Fira Sans', Courier, monospace;
+  text-align: center;
+}
+
 .hidden {
   display: none;
 }

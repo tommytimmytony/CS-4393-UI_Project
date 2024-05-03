@@ -4,10 +4,11 @@ const mainContainer = document.querySelector(".food-container");
 const itemContainer = document.getElementsByClassName("food_section-container");
 const filterMenus = document.getElementsByClassName("filters_menu");
 const rowGrid = document.getElementsByClassName("row grid");
-const goToTopBtn = document.getElementById("go-to-top-button");
-const orderInfo = {};
+const ordersInfo = {};
 const orderContainer = document.querySelector(".shopping-navbar-nav");
+
 initContent();
+initData();
 
 function initContent() {
   addSection(data.BreakfastSpecialties);
@@ -20,6 +21,26 @@ function initContent() {
   addSection(data.Beverages);
   addSection(data.Desserts);
   addSection(data.PartyPans);
+}
+
+function initData() {
+  const dataJson = localStorage.getItem("ordersInfo");
+  const oldData = JSON.parse(dataJson);
+  for (const key in oldData) {
+    if (oldData[key].qty == 0) {continue};
+    ordersInfo[key] = oldData[key];
+    addOrder(ordersInfo[key], true);
+  }
+  updateItemCounter();
+}
+
+updateActiveUser();
+function updateActiveUser() {
+  const activeUserEl = document.querySelector(".nav-link.user");
+  const user = localStorage.getItem("activeUser");
+  if (user != null) {
+    activeUserEl.textContent = user;
+  }
 }
 
 function addSection(section) {
@@ -112,30 +133,47 @@ function addContent(items, position) {
   }
   rowGrid[position].insertAdjacentHTML("beforeend", html);
 }
-function addOrder(orderInfo) {
+
+function updateLocalStorage() {
+    localStorage.setItem("ordersInfo", JSON.stringify(ordersInfo));
+}
+
+function updateOrder(orderInfo) {
+  updateLocalStorage();
   const total = (orderInfo.qty * orderInfo.price).toFixed(2);
-  if (orderInfo.qty == 1) {
-    const html = `<div class="order-item">
+  $(document).ready(function () {
+    $('[itemQty="' + orderInfo.name.toString() + '"]').text(
+      orderInfo.qty.toString()
+    );
+    $('[itemTotal="' + orderInfo.name.toString() + '"]').text(total.toString());
+  });
+  updateItemCounter();
+}
+
+function addOrder(orderInfo, initOrder) {
+  updateLocalStorage();
+  const total = (orderInfo.qty * orderInfo.price).toFixed(2);
+  if (initOrder) {
+    const html = `<div class="order-item" orderName="${orderInfo.name.toString()}">
       ${orderInfo.name.toString()}
         </div>
-        <div class="order-item" itemQty="${orderInfo.name.toString()}">
-           ${orderInfo.qty.toString()}   
+        <div class="order-item" orderName="${orderInfo.name.toString()}">
+           <span itemQty="${orderInfo.name.toString()}">${orderInfo.qty.toString()}</span>
+           <div class="order-itemQty-modify">       
+              <i class="fa-solid fa-caret-up" itemQty="${orderInfo.name.toString()}-Qty"></i> 
+              <i class="fa-solid fa-caret-down" itemQty="${orderInfo.name.toString()}-Qty"></i>
+           </div>
         </div>
-        <div class="order-item" itemTotal="${orderInfo.name.toString()}">
+        <div class="order-item" itemTotal="${orderInfo.name.toString()}" orderName="${orderInfo.name.toString()}">
            ${total.toString()}
-        </div>`;
+        </div>
+        `;
     orderContainer.insertAdjacentHTML("beforeend", html);
   } else {
-    $(document).ready(function () {
-      $('[itemQty="' + orderInfo.name.toString() + '"]').text(
-        orderInfo.qty.toString()
-      );
-      $('[itemTotal="' + orderInfo.name.toString() + '"]').text(
-        total.toString()
-      );
-    });
+    updateOrder(orderInfo);
   }
 }
+
 function shuffleObject(obj) {
   // Convert object values to an array
   const valuesArray = Object.values(obj);
@@ -248,133 +286,107 @@ $(window).on("load", function () {
 
     var data = $(this).attr("data-filter");
     var filterGroup = $(this).closest(".filters_menu").data("filter-group");
-    console.log(filterGroup);
-    switch (filterGroup) {
-      case "group0":
-        $grid0.isotope({
-          filter: data,
-        });
-        break;
-      case "group1":
-        $grid1.isotope({
-          filter: data,
-        });
-        break;
-      case "group2":
-        $grid2.isotope({
-          filter: data,
-        });
-        break;
-      case "group3":
-        $grid3.isotope({
-          filter: data,
-        });
-        break;
-      case "group4":
-        $grid4.isotope({
-          filter: data,
-        });
-        break;
-      case "group5":
-        $grid5.isotope({
-          filter: data,
-        });
-        break;
-      case "group6":
-        $grid6.isotope({
-          filter: data,
-        });
-        break;
-      case "group7":
-        $grid7.isotope({
-          filter: data,
-        });
-        break;
-      case "group8":
-        $grid8.isotope({
-          filter: data,
-        });
-        break;
-      case "group9":
-        $grid9.isotope({
-          filter: data,
-        });
-        break;
-      default:
-        // Handle other cases if needed
-        console.log("Something went wrong! Check HTML group!");
-        break;
+
+    // Use the stored grid from the object
+    $grids[filterGroup].isotope({
+      filter: data,
+    });
+  });
+});
+
+$(document).ready(function () {
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 1000 && !$(".shopping-navbar").hasClass("show")) {
+      $("#go-to-top-button").addClass("show");
+    } else {
+      $("#go-to-top-button").removeClass("show");
     }
   });
+  $("#go-to-top-button").click(function () {
+    $("html, body").animate({ scrollTop: 0 }, 500);
+    return false;
+  });
+});
 
-  var $grid0 = $(".group0").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
+$(document).ready(function () {
+  $(".shopping-btn").click(function () {
+    $(".shopping-navbar").toggleClass("show");
+    $(".shopping-exit-btn").toggleClass("show");
+    $("#go-to-top-button").removeClass("show");
+    $("#checkout-button").addClass("show");
+    $(".menu_nav").toggleClass("slideup");
   });
-  var $grid1 = $(".group1").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
+});
+
+$(document).ready(function () {
+  $(".shopping-exit-btn").click(function () {
+    $(".shopping-navbar").toggleClass("show");
+    $(".shopping-exit-btn").toggleClass("show");
+    $(".menu_nav").toggleClass("slideup");
+    $("#checkout-button").removeClass("show");
+    removeZeroQtyItems();
   });
-  var $grid2 = $(".group2").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
+});
+
+function removeZeroQtyItems() {
+  $(".order-item").each(function () {
+    let itemQty = parseInt($(this).find("span").text());
+    if (itemQty === 0) {
+      const orderName = $(this).attr("orderName");
+      if (orderName) {
+        $(`div[orderName="${orderName}"]`).remove();
+        delete ordersInfo[orderName];
+      }
+    }
   });
-  var $grid3 = $(".group3").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
+}
+
+function updateItemCounter() {
+  const itemCount = $(".item-count");
+  const itemValues = Object.values(ordersInfo);
+  const totalQty = itemValues.reduce((total, item) => total + item.qty, 0);
+  if (totalQty == 0) {
+    itemCount.hide();
+  } else {
+    itemCount.text(`${totalQty}`);
+    itemCount.show();
+  }
+}
+
+$(document).ready(function () {
+  $("a").click(function () {
+    var dataVal = $(this).attr("dataVal");
+    if (dataVal == undefined) {
+      return;
+    }
+    var dataDesc = $(this).attr("dataDesc");
+    var dataPrice = $(this).attr("dataPrice");
+    let initOrder = false;
+    if (ordersInfo.hasOwnProperty(dataVal)) {
+      ordersInfo[dataVal].qty += 1;
+    } else {
+      ordersInfo[dataVal] = {};
+      ordersInfo[dataVal].price = dataPrice;
+      ordersInfo[dataVal].description = dataDesc;
+      ordersInfo[dataVal].name = dataVal;
+      ordersInfo[dataVal].qty = 1;
+      initOrder = true;
+    }
+    updateItemCounter();
+    addOrder(ordersInfo[dataVal], initOrder);
   });
-  var $grid4 = $(".group4").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
+});
+
+$(document).ready(function () {
+  $("body").on("click", ".fa-solid.fa-caret-up", function () {
+    let dataVal = $(this).attr("itemQty").slice(0, -4);
+    ordersInfo[dataVal].qty += 1;
+    updateOrder(ordersInfo[dataVal]);
   });
-  var $grid5 = $(".group5").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
-  });
-  var $grid6 = $(".group6").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
-  });
-  var $grid7 = $(".group7").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
-  });
-  var $grid8 = $(".group8").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
-  });
-  var $grid9 = $(".group9").isotope({
-    itemSelector: ".all",
-    percentPosition: false,
-    masonry: {
-      columnWidth: ".all",
-    },
+
+  $("body").on("click", ".fa-solid.fa-caret-down", function () {
+    let dataVal = $(this).attr("itemQty").slice(0, -4);
+    if (ordersInfo[dataVal].qty > 0) ordersInfo[dataVal].qty -= 1;
+    updateOrder(ordersInfo[dataVal]);
   });
 });

@@ -106,7 +106,12 @@ $(document).ready(function () {
     } else if (Object.keys(ordersInfo).length == 0) {
       $(".header").text("Your order is empty. Please choose an item");
     } else {
+      localStorage.removeItem("ordersInfo");
+      $("div.order-container").remove();
       $(".header").text("Order Placed Succesfully!");
+      streetInput.disabled = true;
+      cityInput.disabled = true;
+      stateInput.disabled = true;
     }
     $(".header").show();
   });
